@@ -172,6 +172,16 @@ if OS == "Linux":
     else:
         log_and_exit(f"unsupported architecture '{os.getenv('RUNNER_ARCH')}' detected")
 
+    if cosign_release == 'v0.6.0':
+        # v0.6.0's linux release has a dependency on `libpcsclite1`
+        logger.info("Installing libpcsclite1 package if necessary...")
+        try:
+            subprocess.run(["sudo", "dpkg", "-s", "libpcsclite1"])
+        except:
+            logger.info("libpcsclite1 package is not installed, installing it now")
+            subprocess.run(["sudo", "apt-get", "update", "-q", "-q"])
+            subprocess.run(["sudo", "apt-get", "install", "-yq", "libpcsclite1"])
+
 elif OS == "macOS":
     if arch == "X64":
         bootstrap_filename='cosign-darwin-amd64'
