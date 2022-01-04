@@ -19,11 +19,12 @@ runs:
   using: "composite"
   steps:
     # We verify the version against a SHA **in the published action itself**, not in the GCS bucket.
-    - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
-      shell: bash
-      run: cd ${{ github.action_path }} && python install.py ${{ inputs.install-dir }}
+    - run: cd ${{ github.action_path }} && python install.py ${{ inputs.install-dir }}
       env:
         COSIGN_RELEASE: ${{ inputs.cosign-release }}
     - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       run: echo "${{ inputs.install-dir }}" >> $GITHUB_PATH
       shell: bash
+    - if: ${{ runner.os == 'Windows' }}
+      run: echo "${{ inputs.install-dir }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      shell: pwsh
