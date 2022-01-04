@@ -22,6 +22,7 @@ runs:
     - run: cd ${{ github.action_path }} && python install.py ${{ inputs.install-dir }}
       env:
         COSIGN_RELEASE: ${{ inputs.cosign-release }}
+      shell: bash
     - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       run: echo "${{ inputs.install-dir }}" >> $GITHUB_PATH
       shell: bash
