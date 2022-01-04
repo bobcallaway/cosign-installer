@@ -194,8 +194,17 @@ elif OS == "macOS":
     else:
         log_and_exit(f"unsupported architecture '{os.getenv('RUNNER_ARCH')}' detected")
 elif OS == "Windows":
-    # TODO: implement me
-    pass
+    if arch == "X64":
+        bootstrap_filename='cosign-windows-amd64.exe'
+        bootstrap_sha=bootstrap_windows_amd64_sha
+        desired_cosign_filename='cosign-windows-amd64.exe'
+        # v0.6.0 had different filename structures from all other releases
+        if os.getenv('COSIGN_RELEASE') == 'v0.6.0':
+            desired_cosign_filename='cosign_windows_amd64.exe'
+            desired_cosign_v060_signature='cosign_windows_amd64_0.6.0_windows_amd64.exe.sig'
+    else:
+        log_and_exit(f"unsupported architecture '{os.getenv('RUNNER_ARCH')}' detected")
+
 else:
     log_and_exit(f"Runner OS detected '{OS}' is not supported!")
 
