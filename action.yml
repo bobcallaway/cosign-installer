@@ -21,10 +21,9 @@ runs:
     # We verify the version against a SHA **in the published action itself**, not in the GCS bucket.
     - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       shell: bash
-      run: cd ${{ github.action_path }} && python install.py
+      run: cd ${{ github.action_path }} && python install.py ${{ inputs.install-dir }}
       env:
         COSIGN_RELEASE: ${{ inputs.cosign-release }}
-        INSTALL_DIR: ${{ inputs.install-dir }}
     - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       run: echo "${{ inputs.install-dir }}" >> $GITHUB_PATH
       shell: bash

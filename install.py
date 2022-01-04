@@ -18,8 +18,9 @@ import hashlib
 import logging
 import os
 import re
-import subprocess
 import stat
+import subprocess
+import sys
 import urllib.request
 
 
@@ -102,6 +103,16 @@ stdout_handler.setLevel(logging.DEBUG)
 stdout_handler.setFormatter(CustomFormatter(fmt))
 logger.addHandler(stdout_handler)
 
+# get install dir from argv
+if len(sys.argv) != 2:
+    log_and_exit("invalid number of arguments specified")
+
+# check for installation directory value
+install_dir=sys.argv[1]
+install_dir_stat = os.stat(install_dir)
+if not stat.S_ISDIR(install_dir_stat.st_mode):
+    log_and_exit("installation path is not a directory, exiting")
+
 # source bootstrap_version.txt
 logger.info('reading in bootstrap information...')
 from bootstrap_version import *
@@ -112,10 +123,6 @@ if not bootstrap_version:
 
 logger.info(f"bootstrap version '{ bootstrap_version }' of cosign requested")
 
-# check for installation directory value
-install_dir=os.getenv("INSTALL_DIR")
-if not install_dir:
-    log_and_exit("installation path could not be determined, exiting")
 
 # ensure the cosign release version requested is well-formed
 cosign_release=os.getenv('COSIGN_RELEASE', "")
