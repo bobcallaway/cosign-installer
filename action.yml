@@ -166,6 +166,8 @@ runs:
         shaBootstrap=$(shasum cosign);
         if [[ $shaBootstrap != ${expected_bootstrap_version_digest} ]]; then
           log_error "Unable to validate cosign version: '${{ inputs.cosign-release }}'"
+          log_info "${shaBootstrap}"
+          log_info "${expected_bootstrap_version_digest}"
           exit 1
         fi
         chmod +x cosign
