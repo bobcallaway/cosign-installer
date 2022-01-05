@@ -42,7 +42,7 @@ runs:
               echo "$(shasum -a256 $1 | cut -d' ' -f1)"
               ;;
             Windows)
-              echo "$(powershell -command "Get-FileHash $1 -Algorithm SHA256 | Select-Object -ExpandProperty Hash")"
+              echo "$(powershell -command "(Get-FileHash $1 -Algorithm SHA256 | Select-Object -ExpandProperty Hash).ToLower()")"
               ;;
             *)
               log_error "unsupported OS ${{ runner.os }}"
