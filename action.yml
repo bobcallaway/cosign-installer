@@ -42,7 +42,7 @@ runs:
               echo "$(shasum -a256 $1 | cut -d' ' -f1)"
               ;;
             Windows)
-              echo '$(CertUtil -hashfile cosign $1 | findstr /v "hash")'
+              echo "$(CertUtil -hashfile $1 SHA256 | findstr /v \"hash\")"
               ;;
             *)
               log_error "unsupported OS ${{ runner.os }}"
