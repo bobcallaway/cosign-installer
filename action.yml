@@ -106,7 +106,7 @@ runs:
             ;;
           
           macOS)
-            ulimit -u 65536
+            sudo ulimit -u 65536
             case ${{ runner.arch }} in
               X64)
                 bootstrap_filename='cosign-darwin-amd64'
