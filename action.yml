@@ -106,6 +106,7 @@ runs:
             ;;
           
           macOS)
+            ulimit -a
             case ${{ runner.arch }} in
               X64)
                 bootstrap_filename='cosign-darwin-amd64'
