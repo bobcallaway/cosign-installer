@@ -35,16 +35,20 @@ runs:
 
         function shasum() {
           case ${{ runner.os }} in
-          Linux)
-            shaprog="sha256sum $1 | cut -d' ' -f1"
-          macOS)
-            shaprog="shasum -a256 $1 | cut -d' ' -f1"
-          Windows)
-            shaprog='CertUtil -hashfile cosign $1 | findstr /v "hash"'
-          *)
-            log_error "unsupported architecture ${{ runner.os }}"
-            exit 1
-          ;;
+            Linux)
+              shaprog="sha256sum $1 | cut -d' ' -f1"
+              ;;
+            macOS)
+              shaprog="shasum -a256 $1 | cut -d' ' -f1"
+              ;;
+            Windows)
+              shaprog='CertUtil -hashfile cosign $1 | findstr /v "hash"'
+              ;;
+            *)
+              log_error "unsupported architecture ${{ runner.os }}"
+              exit 1
+              ;;
+          esac
         }
 
         bootstrap_version='v1.4.1'    
