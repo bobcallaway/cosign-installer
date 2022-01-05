@@ -149,7 +149,12 @@ runs:
                   desired_cosign_v060_signature='cosign_windows_amd64_0.6.0_windows_amd64.exe.sig'
                 fi
                 ;;
-          
+              *)
+                log_error "unsupported architecture $arch"
+                exit 1
+                ;;
+            esac
+            ;;
           *)
             log_error "unsupported architecture $arch"
             exit 1
