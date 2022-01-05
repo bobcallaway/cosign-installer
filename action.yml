@@ -49,6 +49,7 @@ runs:
               exit 1
               ;;
           esac
+          echo "$(shaprog)"
         }
 
         bootstrap_version='v1.4.1'    
