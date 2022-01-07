@@ -33,7 +33,7 @@ runs:
         fi
         set -e
 
-        shasum() {
+        shaprog() {
           case ${{ runner.os }} in
             Linux)
               sha256sum $1 | cut -d' ' -f1
@@ -59,7 +59,7 @@ runs:
         bootstrap_darwin_arm64_sha='f8162aba987e1afddb20a672e47fb070ec6bf1547f65f23159e0f4a61e4ea673'
         bootstrap_windows_amd64_sha='408557d35b0158590c1978d72cf5079fc299b3f0315f3ece259c6c0f159a079b'
 
-        trap "popd" EXIT
+        trap "popd >/dev/null" EXIT
 
         mkdir -p ${{ inputs.install-dir }}
         pushd ${{ inputs.install-dir }} > /dev/null
@@ -106,7 +106,6 @@ runs:
             ;;
           
           macOS)
-            sudo ulimit -u 65536
             case ${{ runner.arch }} in
               X64)
                 bootstrap_filename='cosign-darwin-amd64'
@@ -164,7 +163,7 @@ runs:
         expected_bootstrap_version_digest=${bootstrap_sha}
         log_info "Downloading bootstrap version '${bootstrap_version}' of cosign to verify version to be installed...\n      https://storage.googleapis.com/cosign-releases/${bootstrap_version}/${bootstrap_filename}"
         curl -sL https://storage.googleapis.com/cosign-releases/${bootstrap_version}/${bootstrap_filename} -o cosign
-        shaBootstrap=$(shasum cosign);
+        shaBootstrap=$(shaprog cosign);
         if [[ $shaBootstrap != ${expected_bootstrap_version_digest} ]]; then
           log_error "Unable to validate cosign version: '${{ inputs.cosign-release }}'"
           exit 1
@@ -188,7 +187,7 @@ runs:
         # Download custom cosign
         log_info "Downloading platform-specific version '${{ inputs.cosign-release }}' of cosign...\n      https://storage.googleapis.com/cosign-releases/${{ inputs.cosign-release }}/${desired_cosign_filename}"
         curl -sL https://storage.googleapis.com/cosign-releases/${{ inputs.cosign-release }}/${desired_cosign_filename} -o cosign_${{ inputs.cosign-release }}
-        shaCustom=$(shasum cosign_${{ inputs.cosign-release }});
+        shaCustom=$(shaprog cosign_${{ inputs.cosign-release }});
 
         # same hash means it is the same release
         if [[ $shaCustom != $shaBootstrap ]]; then
