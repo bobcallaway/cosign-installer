@@ -1,6 +1,6 @@
 # cosign-installer GitHub Action
 
-This action enables you to sign and verify container images using `cosign`.
+This action enables you to sign and verify container images and blobs using `cosign`.
 `cosign-installer` verifies the integrity of the `cosign` release during installation.
 
 For a quick start guide on the usage of `cosign`, please refer to https://github.com/sigstore/cosign#quick-start.
